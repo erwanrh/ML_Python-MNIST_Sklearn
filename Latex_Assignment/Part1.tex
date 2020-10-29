@@ -12,7 +12,7 @@
 
 \underline{Question} :  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )\\
 
-\underline{Answer} : LinearSVC means Linear Support Vector Classification. it  \\
+\underline{Answer} : LinearSVC means Linear Support Vector Classification. We are using a linear kernel. The parameter C represents the regularization weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
 
 \begin{figure*}[ht]
 	\centering 
@@ -22,4 +22,8 @@
 
 \underline{Question} : What is the outcome of np.logspace(-8, 8, 17, base=2)? More generally, what is the outcome of np.logspace(-a, b, k, base=m)?\\
 
-\underline{Answer} : The logspace function from the numpy package will return k numbers going from -a to b on a log scale with a log base 2. 
+\underline{Answer} : The outcome of np.logspace(-8, 8, 17, base=2) is a logarthmic space going from $2^{-8}$ to $2^8$ with 17 numbers equally spaced on log scale.
+ The logspace function from the numpy package will return k numbers going from $m^{-a}$ to $m^b$ spaced on a log scale with a log base m. \\
+
+\underline{Question} : What is the meaning of the warnings? What is the parameter responsible for its appearence? \\
+
