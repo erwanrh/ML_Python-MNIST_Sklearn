@@ -29,5 +29,18 @@
  The logspace function from the numpy package will return k numbers going from $m^{-a}$ to $m^b$ spaced on a log scale with a log base m. \\
 
 \underline{Question} : What is the meaning of the warnings? What is the parameter responsible for its appearence? \\
+ \underline{Answer} : The warning tells us that the algorithm did not converge, it did not reach the stop criterion. The parameter responsible for its appearence is the max_iter parameter. Its value is not sufficient for the algorithm to converge. The data variance is maybe too large for the algorithm to efficiently perform the SVM. \\
+
+\underline{Question} : What did we change with respect to the previous run of LinearSVC()? \\
+\underline{Answer}: We added a parameter MaxAbsScaler() to scale the absolute data between 0 and 1 and thus reduce the variance. \\
+
+\underline{Question} : Explain what happens if we execute \\
+\underline{Answer}: Those lines will execute a SVM with a maxabsscaler parameter but with no C parameter which is by default 1.0.\\
+
+\underline{Question} : what is the difference between StandardScaler() and MaxAbsScaler()? What are other scaling options available in sklearn? \\
+\underline{Answer}: StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from StandarScaler because absolute values are mapped in the range [0,1]. \\
+
+\underline{Question} : using the previous code as an example achieve test accuracy  ≥0.9 . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.\\
+\underline{Answer}: choose an algorithm and test
 
 
