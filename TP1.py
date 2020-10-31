@@ -9,9 +9,7 @@
 # 
 # PART 1 is a list of commands that should be followed step by step. PART 2 is an open problem for which we are waiting for your creativity!
 
-# # Imported packages
-
-# In[11]:
+# In[7]:
 
 
 import numpy as np
@@ -25,8 +23,9 @@ from sklearn.preprocessing import MaxAbsScaler, StandardScaler
 from sklearn.metrics import balanced_accuracy_score, make_scorer, confusion_matrix
 
 
-get_ipython().run_line_magic('matplotlib', 'notebook')
 
+
+# # Imported packages
 
 # #  PART 1 -- MNIST
 # 
@@ -51,11 +50,8 @@ get_ipython().run_line_magic('matplotlib', 'notebook')
 # 
 # The initial goal is to build a classifier $\hat g$, which receives a new image $X$ and outputs the number that is present on the image.
 
-# In[9]:
+# In[8]:
 
-from sklearn.datasets import fetch_openml
-
-mnist = fetch_openml('mnist_784')
 
 X_train = np.load('data/mnist1_features_train.npy', allow_pickle=True)
 y_train = np.load('data/mnist1_labels_train.npy', allow_pickle=True)
@@ -71,25 +67,24 @@ print('Test data contains: {} samples'.format(X_test.shape[0]))
 
 # Since each observation is actually an image, we can visualize it.
 
-# In[ ]:
+# In[9]:
 
 
-axes = plt.subplots(1, 10)[1]  # creates a grid of 10 plots
+axes = plt.subplots(1, 20)[1]  # creates a grid of 10 plots
 
 # More details about zip() function here https://docs.python.org/3.3/library/functions.html#zip
 images_and_labels = list(zip(X_train, y_train)) 
-for ax, (image, label) in zip(axes, images_and_labels[:10]):
+for ax, (image, label) in zip(axes, images_and_labels[:20]):
     ax.set_axis_off()
     ax.imshow(image.reshape((28, 28)), cmap=plt.cm.gray_r, interpolation='nearest')
     ax.set_title('{}'.format(label))
 
 
-# In[ ]:
+# In[10]:
 
 
 for i in range(10):
     print('Number of {}s in the train dataset is {}'.format(i, np.sum([y_train == str(i)])))
-
 
 # From the above we conclude that the dataset is rather balanced, that is, each class contains similar amount of observations. The rarest class is $y = 6$ with $175$ examples and the most common class is $y = 2$ with $226$ examples
 
@@ -102,7 +97,7 @@ for i in range(10):
 # ```
 # What is the complexity for each of the three following cases? 
 
-# In[ ]:
+# In[7]:
 
 
 # GridSearchCV with kNN : a simple baseline
@@ -123,7 +118,7 @@ print('Classification accuracy on test is: {}'.format(clf.score(X_test, y_test))
 
 # **Question:** What is the outcome of ```np.logspace(-8, 8, 17, base=2)```? More generally, what is the ourcome of ```np.logspace(-a, b, k, base=m)```?
 
-# In[ ]:
+# In[11]:
 
 
 # SVM Classifier
@@ -199,7 +194,7 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
         break
     if true_label != pred_label:
         # Plotting predicted probabilities
-        axes[1, j].bar(np.arange(10), clf4.predict_proba(image.reshape(1, -1))) 
+        axes[1, j].bar(np.arange(10), clf4.predict_proba(image.reshape(1, -1))[0]) 
         axes[1, j].set_xticks(np.arange(10))
         axes[1, j].set_yticks([])
         
@@ -207,11 +202,13 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
         axes[0, j].imshow(image.reshape((28, 28)), cmap=plt.cm.gray_r, interpolation='nearest')
         axes[0, j].set_xticks([])
         axes[0, j].set_yticks([])
-        axes[0, j].set_title('Predicted {}'.format(pred_label))
+        axes[0, j].set_title('Predicted {}'.format(pred_label)+'/True {}'.format(true_label),fontsize=8)
         j += 1
         
 #         plt.xticks(x, ('Bill', 'Fred', 'Mary', 'Sue'))
 #         axex[1, j].plot()
+
+
 
 
 # # Changing the Loss function
