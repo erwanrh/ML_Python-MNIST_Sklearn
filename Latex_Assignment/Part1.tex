@@ -82,13 +82,30 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
 \subsection{Changing the loss function}
  
 \textbf{Question: What is balanced\_accuracy\_score? Write its mathematical mathematical description.} \\
-balanced\_accuracy\_score is a method from the sklearn package that computes the balanced accuracy metric. In classification, the accuracy is the percentage of well-classified individuals on a test sample. The formula is : \begin{equation*}
+
+The balanced accuracy in binary and multiclass classification problems is used to deal with imbalanced datasets. 
+It is defined as the arithmetic mean of the sensitivity (also called recall or true positive rate) and the specificity (also called true negative rate). As a consequence, it represents the average accuracy per class.
+recall = TP/(TP + FN) TP: true positive and FN: false negative
+specificity = TN/(TN+ FP)
+Instead of calculing the regular score which is (TP+TN)/all predictions, the balanced score is (recall+specificity)/2. If the number in each categorie of prediction is the same, regular score= balanced score. Otherwise, the good predictions of an over represented class will not inflate the balanced score unlike the regular one.\\
+
+balanced\_accuracy\_score is a method from the sklearn package that computes the balanced accuracy metric. 
+
+
+In classification, the accuracy is the percentage of well-classified individuals on a test sample. The formula is : \begin{equation*}
 True Positive + 	True Negative \over Sample Size
 \end{equation*}
 But this metric does not take into account if the sample is imbalanced. For example if we have more real positives than real negatives. The balanced accuracy takes this into account by taking the average value of true positives divided by real positives and true negatives divided by real negatives as follows : \begin{equation*} \frac{tp}{rp}+ \frac{tn}{rn} \over 2
 \end{equation*} \\
 
 \textbf{Question: What is the confusion matrix? What are the conclusions that we can draw from the} \verb|confusion_matrix(y_test, clf4.predict(X_test))?| \\
+
+The general idea is to count the number of times instances of class A are classified as class B. For example, to know the number of times the classifier confused images of 5s with 2s, you would look in the 5th row and 2nd column of the confusion
+matrix. In row the actual class and in columns the predicted class given by algorithm.
+As we can see, 8s are often confused with 5s (3/17=18\% of the time when the actual class is 8) and 3s are also confused with 5s 13\% of the time (3/23). Also, 5s are detected only 57\% (8/14) of the time. 0s and 9s seem well detected with respectively 100\% (22/22) and 92\% (24/26) recall/true positive rate.
+Concerning the scores, the balanced is slightly inferior to the regular one (83\% vs 84\%) due to the underrepresentation of the worst predicted class (ie 5s).
+Because there are several class, it could be interesting to transform the confusion matrix into a heat map. 
+On the heat map we can check that the algorithm is pretty good at predicting classes since most images are on the main diagonale. Even though, 5s are darker than other classes explained by the underrepresnetation of the class and the lower number of good predictions. 1s are well predicted given it's bright square on the main diagonale but it can be partly explained by the overrepresentation of 1s in the datatset. 
 The confusion matrix is the matrix that gives for each classification outcome, real and predicted, the number of individuals. For a binary outcome it is as follow : 
 
 The diagonal terms are the number of individuals classified in the right category by the SVM algorithm. 
@@ -105,3 +122,4 @@ The diagonal terms are the number of individuals classified in the right categor
  [ 0  0  0  0  2  0  0  2  1 21]]
 \end{verbatim}
 Here we have a fair amount of well-classified individuals except for the number 5 that has 6 well classified individuals and 6 misclassified individuals. 
+
