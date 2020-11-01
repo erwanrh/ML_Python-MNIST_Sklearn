@@ -175,6 +175,22 @@ print('Classification accuracy on test is: {}'.format(clf4.score(X_test, y_test)
 
 # **Question:** using the previous code as an example achieve test accuracy $\geq 0.9$. You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.
 
+
+#Test of a method
+from sklearn.ensemble import RandomForestClassifier
+pipe_test = Pipeline([('scaler', StandardScaler()), ('rf', RandomForestClassifier())])
+parameters_test = {'rf__n_estimators':[100,150],
+                   'rf__criterion': ['gini','entropy']} 
+scoring_test = {'accuracy': make_scorer(accuracy_score),
+           'balanced_accuracy':make_scorer(balanced_accuracy_score) }
+clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test)
+clf_test.fit(X_train, y_train)
+
+print('Returned hyperparameter: {}'.format(clf_test.best_params_))
+print('Best classification accuracy in train is: {}'.format(clf_test.best_score_))
+print('Classification accuracy on test is: {}'.format(clf_test.score(X_test, y_test)))
+
+
 # # Visualizing errors
 
 # Some ```sklearn``` methods are able to output probabilities ```predict_proba(X_test)```.
@@ -260,7 +276,5 @@ print(confusion_matrix(y_test, clf4.predict(X_test)))
 #    3. description of the algorithms that you used 
 
 # In[ ]:
-
-
 
 

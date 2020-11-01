@@ -10,12 +10,14 @@ The test accuracy is the measure of how often the points are correclty classifie
 
 \textbf{{Question}:  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )}\\
 LinearSVC means Linear Support Vector Classification. We are using a linear kernel. The parameter C represents the regularization weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
+\todo{Add description of SVC}
+
 
 \begin{figure*}[ht]
 	\centering 
 	\includegraphics[scale = 0.35]{Pics/SVM}
-	\caption{Example SVM}
-\end{figure*}
+	\label{fig:svmex}
+\end{figure*}:
 
 \textbf{{Question} : What is the outcome of np.logspace(-8, 8, 17, base=2)? More generally, what is the outcome of np.logspace(-a, b, k, base=m)?}\\
 The outcome of np.logspace(-8, 8, 17, base=2) is a logarthmic space going from $2^{-8}$ to $2^8$ with 17 numbers equally spaced on log scale.
@@ -24,29 +26,25 @@ The outcome of np.logspace(-8, 8, 17, base=2) is a logarthmic space going from $
 \textbf{Question : What is the meaning of the warnings? What is the parameter responsible for its appearence?}\\
 The warning tells us that the algorithm did not converge, it did not reach the stop criterion. The parameter responsible for its appearence is the max\_iter parameter. Its value is not sufficient for the algorithm to converge. The data variance is maybe too large for the algorithm to efficiently perform the SVM. \\
 
-\underline{Question} : What did we change with respect to the previous run of LinearSVC()? \\
-\underline{Answer}: We added a parameter MaxAbsScaler() to scale the absolute data between 0 and 1 and thus reduce the variance. \\
+\textbf{Question : What did we change with respect to the previous run of LinearSVC()?} \\
+We are running the svc function which is by default a RBF SVC and not a linear SVC. RBF means radial basis function. We added a parameter MaxAbsScaler() to scale the absolute data between 0 and 1 and thus reduce the variance. \\
 
-\underline{Question} : Explain what happens if we execute \\
-\underline{Answer}: Those lines will execute a SVM with a maxabsscaler parameter but with no C parameter which is by default 1.0.\\
+\textbf{Question : Explain what happens if we execute} 
+\begin{verbatim}pipe.fit(X_train, y_train)
+pipe.predict(X_test, y_test)\end{verbatim} \\
+Those lines will execute a SVM with a maxabsscaler parameter but with no C parameter which is by default 1.0.\\
 
-\underline{Question} : what is the difference between StandardScaler() and MaxAbsScaler()? What are other scaling options available in sklearn? \\
-\underline{Answer}: StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from StandarScaler because absolute values are mapped in the range [0,1]. \\
+\textbf{Question : what is the difference between StandardScaler() and MaxAbsScaler()? What are other scaling options available in sklearn? }\\
+StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from StandarScaler because absolute values are mapped in the range [0,1]. \\
+\todo{Add other options for scaling}
 
-\underline{Question} : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.\\
+\textbf{Question : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.}\\
 \underline{Answer}: choose an algorithm and test \\
 
 \subsection{Visualizing errors}
 The Logistic Regression function from skLearn package is able to give us the probabilities of each outcome. The figure \ref{fig:probas} shows pictures, outcome, real value and probabilities for the 4 first mistakes, ie the 4 first times the predicted value is not equal to the real value. \\
  
-\begin{figure*}[ht]
-	\centering 
-	\includegraphics[scale=0.4]{Pics/probas}
-	\caption{Probabilities of each outcome for the logistic regression}
-	\label{fig:probas}
-\end{figure*}
-
-The error in the chunk of code was because the predict\_proba method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to obtain the proabilities array (see line 11).\\
+The error in the chunk of code was because the \verb|predict_proba| method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to obtain the proabilities array (see line 11).\\
 
 The code is as follows :
  
@@ -73,7 +71,37 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
         j += 1
 \end{lstlisting}
 
+
+\begin{figure*}[h]
+	\centering 
+	\includegraphics[scale=0.4]{Pics/probas}
+	\caption{Probabilities of each outcome for the logistic regression}
+	\label{fig:probas}
+\end{figure*}
+
 \subsection{Changing the loss function}
  
 \textbf{Question: What is balanced\_accuracy\_score? Write its mathematical mathematical description.} \\
-balanced\_accuracy\_score is a method from the sklearn package that 
+balanced\_accuracy\_score is a method from the sklearn package that computes the balanced accuracy metric. In classification, the accuracy is the percentage of well-classified individuals on a test sample. The formula is : \begin{equation*}
+True Positive + 	True Negative \over Sample Size
+\end{equation*}
+But this metric does not take into account if the sample is imbalanced. For example if we have more real positives than real negatives. The balanced accuracy takes this into account by taking the average value of true positives divided by real positives and true negatives divided by real negatives as follows : \begin{equation*} \frac{tp}{rp}+ \frac{tn}{rn} \over 2
+\end{equation*} \\
+
+\textbf{Question: What is the confusion matrix? What are the conclusions that we can draw from the} \verb|confusion_matrix(y_test, clf4.predict(X_test))?| \\
+The confusion matrix is the matrix that gives for each classification outcome, real and predicted, the number of individuals. For a binary outcome it is as follow : 
+
+The diagonal terms are the number of individuals classified in the right category by the SVM algorithm. 
+\begin{verbatim}
+	[[22  0  0  0  0  0  0  0  0  0]
+ [ 0 24  0  0  0  0  0  0  2  0]
+ [ 0  0 14  1  1  0  0  0  0  0]
+ [ 0  0  0 18  0  3  0  0  1  1]
+ [ 0  1  0  0 17  0  0  0  0  2]
+ [ 1  0  0  1  0  6  0  1  0  1]
+ [ 1  2  1  0  0  0 20  0  0  0]
+ [ 0  0  0  0  1  0  0 15  0  0]
+ [ 0  2  0  1  0  3  0  0 11  0]
+ [ 0  0  0  0  2  0  0  2  1 21]]
+\end{verbatim}
+Here we have a fair amount of well-classified individuals except for the number 5 that has 6 well classified individuals and 6 misclassified individuals. 
