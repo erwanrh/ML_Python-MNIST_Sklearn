@@ -20,7 +20,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MaxAbsScaler, StandardScaler
-from sklearn.metrics import balanced_accuracy_score, make_scorer, confusion_matrix
+from sklearn.metrics import balanced_accuracy_score, make_scorer, confusion_matrix, accuracy_score
 
 
 
@@ -183,12 +183,15 @@ parameters_test = {'rf__n_estimators':[100,150],
                    'rf__criterion': ['gini','entropy']} 
 scoring_test = {'accuracy': make_scorer(accuracy_score),
            'balanced_accuracy':make_scorer(balanced_accuracy_score) }
-clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test)
+clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test, refit ='balanced_accuracy')
 clf_test.fit(X_train, y_train)
 
 print('Returned hyperparameter: {}'.format(clf_test.best_params_))
 print('Best classification accuracy in train is: {}'.format(clf_test.best_score_))
 print('Classification accuracy on test is: {}'.format(clf_test.score(X_test, y_test)))
+
+clf_test.cv_results_['mean_test_accuracy']
+clf_test.cv_results_['mean_test_balanced_accuracy']
 
 
 # # Visualizing errors

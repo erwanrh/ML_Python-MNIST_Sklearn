@@ -39,11 +39,10 @@ StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean an
 \todo{Add other options for scaling}
 
 \textbf{Question : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.}\\
-\underline{Answer}: choose an algorithm and test \\
+We tried the Random Forest algorithm which is \todo{definition of random forest mathematically}. We used a pipeline with a scaler : the standard scaler to have less variance in the data and the \verb|RandomForestClassifier()| function from the skLearn package. The hyperparameters tested are the number of trees to estimate, we chose 100 (default) and 150,  and the variance criterion used in each tree to select a feature and a threshold, entropy or gini coefficient.
+
 
 \subsection{Visualizing errors}
-The Logistic Regression function from skLearn package is able to give us the probabilities of each outcome. The figure \ref{fig:probas} shows pictures, outcome, real value and probabilities for the 4 first mistakes, ie the 4 first times the predicted value is not equal to the real value. \\
- 
 The error in the chunk of code was because the \verb|predict_proba| method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to obtain the proabilities array (see line 11).\\
 
 The code is as follows :
@@ -71,7 +70,7 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
         j += 1
 \end{lstlisting}
 
-
+\todo{maybe remove figure}
 \begin{figure*}[h]
 	\centering 
 	\includegraphics[scale=0.4]{Pics/probas}
@@ -106,20 +105,14 @@ As we can see, 8s are often confused with 5s (3/17=18\% of the time when the act
 Concerning the scores, the balanced is slightly inferior to the regular one (83\% vs 84\%) due to the underrepresentation of the worst predicted class (ie 5s).
 Because there are several class, it could be interesting to transform the confusion matrix into a heat map. 
 On the heat map we can check that the algorithm is pretty good at predicting classes since most images are on the main diagonale. Even though, 5s are darker than other classes explained by the underrepresnetation of the class and the lower number of good predictions. 1s are well predicted given it's bright square on the main diagonale but it can be partly explained by the overrepresentation of 1s in the datatset. 
-The confusion matrix is the matrix that gives for each classification outcome, real and predicted, the number of individuals. For a binary outcome it is as follow : 
 
 The diagonal terms are the number of individuals classified in the right category by the SVM algorithm. 
-\begin{verbatim}
-	[[22  0  0  0  0  0  0  0  0  0]
- [ 0 24  0  0  0  0  0  0  2  0]
- [ 0  0 14  1  1  0  0  0  0  0]
- [ 0  0  0 18  0  3  0  0  1  1]
- [ 0  1  0  0 17  0  0  0  0  2]
- [ 1  0  0  1  0  6  0  1  0  1]
- [ 1  2  1  0  0  0 20  0  0  0]
- [ 0  0  0  0  1  0  0 15  0  0]
- [ 0  2  0  1  0  3  0  0 11  0]
- [ 0  0  0  0  2  0  0  2  1 21]]
-\end{verbatim}
-Here we have a fair amount of well-classified individuals except for the number 5 that has 6 well classified individuals and 6 misclassified individuals. 
 
+\begin{figure*}[h]
+	\centering 
+	\includegraphics[scale=0.6]{Pics/confusion_matrix}
+	\caption{Confusion matrix for the SVM classifier}
+	\label{fig:probas}
+\end{figure*}
+
+Here we have a fair amount of well-classified individuals except for the number 5 that has 6 well classified individuals and 6 misclassified individuals. 
