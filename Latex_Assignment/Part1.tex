@@ -67,20 +67,12 @@ But this metric does not take into account if the sample is imbalanced. For exam
 
 \textbf{Question: What is the confusion matrix? What are the conclusions that we can draw from the} \verb|confusion_matrix(y_test, clf4.predict(X_test))?| \\
 
-The general idea is to count the number of times instances of class A are classified as class B. For example, to know the number of times the classifier confused images of 5s with 2s, you would look in the 5th row and 2nd column of the confusion
-matrix. In row the actual class and in columns the predicted class given by algorithm.
-As we can see, 8s are often confused with 5s (3/17=18\% of the time when the actual class is 8) and 3s are also confused with 5s 13\% of the time (3/23). Also, 5s are detected only 57\% (8/14) of the time. 0s and 9s seem well detected with respectively 100\% (22/22) and 92\% (24/26) recall/true positive rate.
-Concerning the scores, the balanced is slightly inferior to the regular one (83\% vs 84\%) due to the underrepresentation of the worst predicted class (ie 5s).
-Because there are several class, it could be interesting to transform the confusion matrix into a heat map. 
-On the heat map we can check that the algorithm is pretty good at predicting classes since most images are on the main diagonale. Even though, 5s are darker than other classes explained by the underrepresnetation of the class and the lower number of good predictions. 1s are well predicted given it's bright square on the main diagonale but it can be partly explained by the overrepresentation of 1s in the datatset. 
+The general idea is to count the number of times instances of class A are classified as class B. For example, to know the number of times the classifier confused images of 5s with 2s, you would look in the 5th row and 2nd column of the confusion matrix. In row the actual class and in columns the predicted class given by algorithm. \\
 
-The diagonal terms are the number of individuals classified in the right category by the SVM algorithm. 
+As we can see, in figure \ref{fig:confusion}, appendix \ref{appendix:changingloss}, 8s are often confused with 5s (3/17=18\% of the time when the actual class is 8) and 3s are also confused with 5s 13\% of the time (3/23). Also, 5s are detected only 57\% (8/14) of the time. 0s and 9s seem well detected with respectively 100\% (22/22) and 92\% (24/26) recall/true positive rate.\\
 
-\begin{figure*}[h]
-	\centering 
-	\includegraphics[scale=0.5]{Pics/confusion_matrix}
-	\caption{Confusion matrix for the SVM classifier}
-	\label{fig:probas}
-\end{figure*}
+Regarding the scores, the balanced is slightly inferior to the regular one (83\% vs 84\%) due to the underrepresentation of the worst predicted class (ie 5s).Because there are several class, it could be interesting to transform the confusion matrix into a heat map. \\
 
-Here we have a fair amount of well-classified individuals except for the number 5 that has 6 well classified individuals and 6 misclassified individuals. 
+On the heat map we can check that the algorithm is pretty good at predicting classes since most images are on the main diagonale. Even though, 5s are darker than other classes explained by the underrepresnetation of the class and the lower number of good predictions. 1s are well predicted given its bright square on the main diagonale but it can be partly explained by the overrepresentation of 1s in the datatset. 
+
+

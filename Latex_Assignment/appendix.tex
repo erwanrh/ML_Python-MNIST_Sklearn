@@ -1,6 +1,5 @@
-\begin{appendix}
-
-\section{Visualizing Errors : code chunk}
+\section{Appendix}
+\subsection{Visualizing Errors : code chunk}
 \label{appendix:visualizing}
 \begin{lstlisting}[language=Python]
 axes = plt.subplots(2, 4)[1]  # creates a grid of 10 plots
@@ -33,5 +32,13 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
 	\label{fig:probas}
 \end{figure*}
 
-\end{appendix}
+\newpage
+\subsection{Changing the loss function : confusion matrix / heatmap}
+\label{appendix:changingloss}
+\begin{figure*}[h]
+	\centering 
+	\includegraphics[scale=0.5]{Pics/confusion_matrixr}
+	\caption{Confusion matrix for the SVM classifier}
+	\label{fig:confusion}
+\end{figure*}
 
