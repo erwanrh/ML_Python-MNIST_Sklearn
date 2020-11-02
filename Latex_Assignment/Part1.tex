@@ -3,7 +3,8 @@
 \subsection{Cross-Validation with GridSearchCV}
 \textbf{{Question}: Explain in your report what happens when we run clf.fit(X\_train, Y\_train). What is the complexity for each of the three following cases?} \\
 The line clf.fit(X\_train, Y\_train) here uses the fit method on the object  clf and taking the train sample. We give the features X and the outputs Y. The object clf is from the class GridSearchCV which allows us to find the best hyperparameters among a list we chose. It is taking as parameter an object named knn of the class KNeighborsClassifier(), a dictionary named parameters containing the number of neighbors to be tested in the knn algorithm (1 to 5 here) and the cv parameter referring to the number of folds to be used in the cross-validation. Basically it will perform a 3-folds cross-validation on a kNN model with 1 to 5 neighbors on the train sample and it will allow us to keep the best model. The kNN algorithm is parametered with the default metric which is the Euclidean distance : $\sqrt{\sum^n_{i=1}(x_i - y_i)^2}$. The functions are all part of the sklearn package. \\
-\todo{Add complexity}
+Complexity can be divided into two kinds of complexity i.e: 1) time complexity, deal with how long the algorithm is executed, and 2) space complexity, deal with how much memory is used by it's algorithm.\\
+
 
 \textbf{{Question}:What is the test accuracy? What would be the accuracy of random guess?} \\
 The test accuracy is the measure of how often the points are correclty classified. In our case the accuracy is 0.875.  It means that 87.5\% of the time, the points are correctly classified on the test sample. If we did a random guess we would randomly choose an output in the range 0 to 9 so the accuracy would converge towards $\frac{1}{10}$ according to the LLN.  \\
