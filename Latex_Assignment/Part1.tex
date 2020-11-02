@@ -10,7 +10,8 @@ The test accuracy is the measure of how often the points are correclty classifie
 
 
 \textbf{{Question}:  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )}\\
-LinearSVC means Linear Support Vector Classification. We are using a linear kernel. The parameter C represents the regularization weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
+LinearSVC means Linear Support Vector Classification, which is supervised learning methods used for classification. LinearSVC are classes capable of performing binary and multi-class classification on a dataset. 
+This classifier tries to find a line that separates the True labels from the False labels.. We are using a linear kernel. The parameter C represents the regularization weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
 \todo{Add description of SVC}
 
 
@@ -37,6 +38,9 @@ Those lines will execute the pipeline defined with a \verb|MaxAbsScaler|  prepro
 
 \textbf{Question : what is the difference between} \verb|StandardScaler()| and \verb|MaxAbsScaler()|? \textbf{What are other scaling options available in sklearn? }\\
 StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from StandarScaler because absolute values are mapped in the range [0,1]. \\
+The other scaling option available in sklearn are : \\
+- \verb|MinMaxScaler| which transform features by scaling each feature to a given range, \\
+- and \verb|RobustScaler|, this scale is used if your data contains many outliers. \\ 
 \todo{Add other options for scaling}
 
 \textbf{Question : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyperparamers.}\\
