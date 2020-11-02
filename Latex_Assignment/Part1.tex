@@ -2,14 +2,19 @@
 
 \subsection{Cross-Validation with GridSearchCV}
 \textbf{{Question}: Explain in your report what happens when we run clf.fit(X\_train, Y\_train). What is the complexity for each of the three following cases?} \\
-The line \verb|clf.fit(X\_train, Y\_train)| here uses the fit method on the object  clf and taking the train sample. We give the features X and the outputs Y. The object clf is from the class GridSearchCV which allows us to find the best hyper-parameters among a list we chose. It is taking as parameter an object named knn of the class KNeighborsClassifier(), a dictionary named parameters containing the number of neighbours to be tested in the knn algorithm (1 to 5 here) and the cv parameter referring to the number of folds to be used in the cross-validation. Basically it will perform a 3-folds cross-validation on a kNN algorithm with 1 to 5 neighbours on the train sample and it will allow us to keep the best model. The kNN algorithm is parameterised with the default metric which is the Euclidean distance : $\sqrt{\sum^n_{i=1}(x_i - y_i)^2}$. The functions and methods are all part of the skLearn package. \\
-\todo{Add complexity}
+
+The line \verb|clf.fit(X\_train, Y\_train)| here uses the fit method on the object  clf and taking the train sample. We give the features X and the outputs Y. The object clf is from the class GridSearchCV which allows us to find the best hyperparameters among a list we chose. It is taking as parameter an object named knn of the class KNeighborsClassifier(), a dictionary named parameters containing the number of neighbors to be tested in the knn algorithm (1 to 5 here) and the cv parameter referring to the number of folds to be used in the cross-validation. Basically it will perform a 3-folds cross-validation on a kNN model with 1 to 5 neighbors on the train sample and it will allow us to keep the best model. The kNN algorithm is parametered with the default metric which is the Euclidean distance : $\sqrt{\sum^n_{i=1}(x_i - y_i)^2}$. The functions are all part of the sklearn package. \\
+Complexity can be divided into two kinds of complexity i.e: 1) time complexity, deal with how long the algorithm is executed, and 2) space complexity, deal with how much memory is used by it's algorithm.\\
+
+
 
 \textbf{{Question}:What is the test accuracy? What would be the accuracy of random guess?} \\
+
 The test accuracy is the measure of how often the points are correctly classified. In our case the accuracy is 0.875.  It means that 87.5\% of the time, the points are correctly classified on the test sample. It is computed as the number of well classified individuals over the sample size. If we did a random guess we would randomly choose an output in the range 0 to 9 so the accuracy would converge towards $\frac{1}{10}$ according to the LLN.  \\
 
 
 \textbf{{Question}:  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )}\\
+
 LinearSVC means Linear Support Vector Classification, which is supervised learning methods used for classification. LinearSVC are classes capable of performing binary and multi-class classification on a dataset. 
 This classifier tries to find a line that separates the True labels from the False labels.. We are using a linear kernel. The parameter C represents the regularisation weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
 \todo{Add description of SVC}
@@ -23,13 +28,16 @@ This classifier tries to find a line that separates the True labels from the Fal
 \end{figure*}
 
 \textbf{{Question} : What is the outcome of np.logspace(-8, 8, 17, base=2)? More generally, what is the outcome of np.logspace(-a, b, k, base=m)?}\\
+
 The outcome of np.logspace(-8, 8, 17, base=2) is a logarithmic space going from $2^{-8}$ to $2^8$ with 17 numbers equally spaced on log scale.
  The logspace function from the numpy package will return k numbers going from $m^{-a}$ to $m^b$ spaced on a log scale with a log base m. \\
 
 \textbf{Question : What is the meaning of the warnings? What is the parameter responsible for its appearance?}\\
+
 The warning tells us that the algorithm did not converge, it did not reach the stop criterion. The parameter responsible for its appearance is the max\_iter parameter. Its value is not sufficient for the algorithm to converge. The data variance is maybe too large for the algorithm to efficiently perform the SVM. \\
 
 \textbf{Question : What did we change with respect to the previous run of LinearSVC()?} \\
+
 \todo{maybe complete definition of RBF SVC} We are running the svc function which is by default a RBF SVC and not a linear SVC. RBF means radial basis function. We added a parameter \verb|MaxAbsScaler()| to scale the absolute data between 0 and 1 and thus reduce the variance of the data. \\
 
 \textbf{Question : Explain what happens if we execute} 
@@ -38,6 +46,7 @@ pipe.predict(X_test, y_test)\end{verbatim} \\
 Those lines will execute the pipeline defined with a \verb|MaxAbsScaler|  preprocessing on the features and fit a SVM but with no C parameter defined which will be 1.0 by default.\\
 
 \textbf{Question : what is the difference between} \verb|StandardScaler()| and \verb|MaxAbsScaler()|? \textbf{What are other scaling options available in sklearn? }\\
+
 StandardScaler will normalise the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from MaxAbsScaler  because in this case we map the absolute value of data in a [0,1] range.\\	
 The other scaling option available in sklearn are : \\
 - \verb|MinMaxScaler| which transform features by scaling each feature to a given range [min, max]. \\
@@ -45,6 +54,7 @@ The other scaling option available in sklearn are : \\
 \todo{Add other options for scaling}
 
 \textbf{Question : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyper-parameters.}\\
+
 We tried the Random Forest algorithm which is a method creating a fixed number of random trees (CART algorithm). The randomness in this algorithm comes with the selection of features used to create the trees. Each tree is created with a fixed number of features but these features are randomly drawn from the whole range of available features. In our case, the dataset has 784 features and the algorithm choses $\sqrt{784} = 28$ features for each tree. This function also uses the bagging method for the elements of the sample. It means that for each tree it takes a random sample of the same size as the initial sample. In this case we fit a train sample of size 2000 so the bootstrap bags will have 2000 random elements (they can appear multiple times). In each tree the method is to successively split the features into 2 groups. The choice of the feature and threshold for the split is made by minimising a criterion : the gini coefficient or the entropy. In our case we put both hyper-parameters for the Grid Search to find the best one. \todo{definition of random forest mathematically}
 We used the method \verb|RandomForestClassifier()| from the skLearn package in the pipeline along with a \verb||
  We used a pipeline with a scaler : the standard scaler to have less variance in the data and the function from the skLearn package. The hyper-parameters tested are the number of trees to estimate, we chose 100 (default) and 150,  and the variance criterion used in each tree to select a feature and a threshold, entropy or gini coefficient.
