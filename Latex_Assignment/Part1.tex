@@ -33,9 +33,9 @@ We are running the svc function which is by default a RBF SVC and not a linear S
 \textbf{Question : Explain what happens if we execute} 
 \begin{verbatim}pipe.fit(X_train, y_train)
 pipe.predict(X_test, y_test)\end{verbatim} \\
-Those lines will execute a SVM with a maxabsscaler parameter but with no C parameter which is by default 1.0.\\
+Those lines will execute the pipeline defined with a \verb|MaxAbsScaler|  preprocessing on the features and a SVM algorithm but with no C parameter defined which will be 1.0 by default.\\
 
-\textbf{Question : what is the difference between StandardScaler() and MaxAbsScaler()? What are other scaling options available in sklearn? }\\
+\textbf{Question : what is the difference between} \verb|StandardScaler()| and \verb|MaxAbsScaler()|? \textbf{What are other scaling options available in sklearn? }\\
 StandardScaler will normalize the data : $\frac{x-m}{\sigma}$ with m the mean and $\sigma$ the standard deviation of data. It differs from StandarScaler because absolute values are mapped in the range [0,1]. \\
 \todo{Add other options for scaling}
 
@@ -44,40 +44,7 @@ We tried the Random Forest algorithm which is \todo{definition of random forest 
 
 
 \subsection{Visualizing errors}
-The error in the chunk of code was because the \verb|predict_proba| method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to obtain the proabilities array (see line 11).\\
-
-The code is as follows :
- 
-\begin{lstlisting}[language=Python]
-axes = plt.subplots(2, 4)[1]  # creates a grid of 10 plots
-
-# More details about zip() function here https://docs.python.org/3.3/library/functions.html#zip
-y_pred = clf4.predict(X_test)
-j = 0 # Index which iterates over plots
-for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
-    if j == 4: # We only want to look at 4 first mistakes
-        break
-    if true_label != pred_label:
-        # Plotting predicted probabilities
-        axes[1, j].bar(np.arange(10), clf4.predict_proba(image.reshape(1, -1))[0]) 
-        axes[1, j].set_xticks(np.arange(10))
-        axes[1, j].set_yticks([])
-        
-        # Plotting the image
-        axes[0, j].imshow(image.reshape((28, 28)), cmap=plt.cm.gray_r, interpolation='nearest')
-        axes[0, j].set_xticks([])
-        axes[0, j].set_yticks([])
-        axes[0, j].set_title('Predicted {}'.format(pred_label)+'/True {}'.format(true_label),fontsize=8)
-        j += 1
-\end{lstlisting}
-
-\todo{maybe remove figure}
-\begin{figure*}[h]
-	\centering 
-	\includegraphics[scale=0.4]{Pics/probas}
-	\caption{Probabilities of each outcome for the logistic regression}
-	\label{fig:probas}
-\end{figure*}
+The error in the chunk of code was because the \verb|predict_proba| method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to obtain the proabilities array (see line 11 appendix \ref{appendix:visualizing}).\\
 
 \subsection{Changing the loss function}
  
@@ -111,7 +78,7 @@ The diagonal terms are the number of individuals classified in the right categor
 
 \begin{figure*}[h]
 	\centering 
-	\includegraphics[scale=0.6]{Pics/confusion_matrix}
+	\includegraphics[scale=0.5]{Pics/confusion_matrix}
 	\caption{Confusion matrix for the SVM classifier}
 	\label{fig:probas}
 \end{figure*}

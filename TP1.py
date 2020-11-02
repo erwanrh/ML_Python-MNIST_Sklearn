@@ -280,4 +280,9 @@ print(confusion_matrix(y_test, clf4.predict(X_test)))
 
 # In[ ]:
 
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.metrics import log_loss
+new_pipeline = Pipeline([('scaler', StandardScaler), ('onehot',OneHotEncoder())])
+new_socrer = make_scorer(log_loss)
+
 
