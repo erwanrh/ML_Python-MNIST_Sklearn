@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{mathtools}
@@ -7,7 +7,7 @@
 \usepackage{titling}
 \usepackage{verbatim}
 \usepackage{bbm}
-\usepackage[a4paper, margin=1.5in]{geometry}
+\usepackage[margin=1.5in]{geometry}
 \renewcommand\maketitlehooka{\null\mbox{}\vfill}
 \renewcommand\maketitlehookd{\vfill\null}
 \usepackage{hyperref}
@@ -41,21 +41,29 @@
     showtabs=false,                  
     tabsize=2
 }
+
 \lstset{style=mystyle}
+
+%Titres et infos sur le document
 \title{TP 1 - Apprentissage Statistique Appliqué}
 \date{2020 - 2021}
 \author{Nokri Amale, Rahis Erwan, Vuillemot Bertrand}
 \begin{document}
+
+%Première page
 \begin{titlepage}
 	\maketitle{}
-	\thispagestyle{empty}
 \end{titlepage}
+
+%Sommaire
 \tableofcontents
 \newpage{}
+
 \include{Part1}
-\include{Part2}
+
+
 \include{appendix}
-\nocite{*}
-\bibliography{biblio}
 \bibliographystyle{plain}
+\bibliography{biblio}
+
 \end{document}

@@ -178,23 +178,20 @@ print('Classification accuracy on test is: {}'.format(clf4.score(X_test, y_test)
 
 #Test of a method
 from sklearn.ensemble import RandomForestClassifier
-import pandas as pd
 pipe_test = Pipeline([('scaler', StandardScaler()), ('rf', RandomForestClassifier())])
-parameters_test = {'rf__n_estimators':[100,150,200],
+parameters_test = {'rf__n_estimators':[100,150],
                    'rf__criterion': ['gini','entropy']} 
-scoring_test = {'accuracy': make_scorer(accuracy_score)}
-clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test, refit='accuracy')
+scoring_test = {'accuracy': make_scorer(accuracy_score),
+           'balanced_accuracy':make_scorer(balanced_accuracy_score) }
+clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test, refit ='balanced_accuracy')
+clf_test.fit(X_train, y_train)
 
-randomforest_result = pd.DataFrame(columns = ['score','params'])
-for i in range(9):
-    clf_test.fit(X_train, y_train)
-    randomforest_result.loc[i]= {'score' : clf_test.score(X_test, y_test), 'params' : clf_test.best_params_}
+print('Returned hyperparameter: {}'.format(clf_test.best_params_))
+print('Best classification accuracy in train is: {}'.format(clf_test.best_score_))
+print('Classification accuracy on test is: {}'.format(clf_test.score(X_test, y_test)))
 
-plt.plot(randomforest_result['score'] )
-plt.hlines(0.9,0,10)
-plt.title('Best accuracy for a GridSearch CV on a Random Forest classifier')
-plt.savefig('Plot Accuracy')
-
+clf_test.cv_results_['mean_test_accuracy']
+clf_test.cv_results_['mean_test_balanced_accuracy']
 
 
 # # Visualizing errors
