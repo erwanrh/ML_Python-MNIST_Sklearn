@@ -32,8 +32,7 @@ The test accuracy is the measure of how often the points are correctly classifie
 \textbf{{Question}:  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )}\\
 
 LinearSVC means Linear Support Vector Classification, which is supervised learning methods used for classification. LinearSVC are classes capable of performing binary and multi-class classification on a dataset. 
-This classifier tries to find a line that separates the True labels from the False labels. We are using a linear kernel. The parameter C represents the regularisation weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
-
+This classifier tries to find a line that separates the True labels from the False labels.. We are using a linear kernel. The parameter C represents the regularisation weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
 \todo{Add description of SVC}
 
 
@@ -60,7 +59,6 @@ The warning tells us that the algorithm did not converge, it did not reach the s
 \textbf{Question : Explain what happens if we execute} 
 \begin{verbatim}pipe.fit(X_train, y_train)
 pipe.predict(X_test, y_test)\end{verbatim} \\
-
 Those lines will execute the pipeline defined with a \verb|MaxAbsScaler|  preprocessing on the features and fit a SVM but with no C parameter defined which will be 1.0 by default.\\
 
 \textbf{Question : what is the difference between} \verb|StandardScaler()| and \verb|MaxAbsScaler()|? \textbf{What are other scaling options available in sklearn? }\\
@@ -69,7 +67,7 @@ StandardScaler will normalise the data : $\frac{x-m}{\sigma}$ with m the mean an
 The other scaling option available in sklearn are : \\
 - \verb|MinMaxScaler| which transform features by scaling each feature to a given range [min, max]. \\
 - \verb|RobustScaler|, this scale is used if your data contains many outliers. \\ 
-
+\todo{Add other options for scaling}
 
 \textbf{Question : Using the previous code as an example achieve test accuracy  $\geq0.9$ . You can use any method from sklearn package. Give a mathematical description of the selected method. Explain the range of considered hyper-parameters.}\\
 
@@ -78,7 +76,6 @@ We used the method \verb|RandomForestClassifier()| from the skLearn package in t
 
 \subsection{Visualizing errors}
 The error in the chunk of code was because the \verb|predict_proba| method returns an array of probabilities within an array. We must then pick the first element of the array (index 0) to retrieve the probabilities array\footnote{See appendix \ref{appendix:visualizing}, line 11}.\\
-
 
 \subsection{Changing the loss function}
 

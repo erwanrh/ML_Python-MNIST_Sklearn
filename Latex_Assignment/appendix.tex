@@ -1,6 +1,20 @@
-\begin{appendix}
+\section{Appendix}
+\subsection{Target accuracy : code}
+\label{appendix:targetaccuracy}
+\begin{lstlisting}[language=Python]
+from sklearn.ensemble import RandomForestClassifier
+pipe_test = Pipeline([('scaler', StandardScaler()), ('rf', RandomForestClassifier())])
+parameters_test = {'rf__n_estimators':[100,150],
+                   'rf__criterion': ['gini','entropy']} 
+scoring_test = {'accuracy': make_scorer(accuracy_score)}
+clf_test = GridSearchCV(pipe_test, parameters_test, cv=3,scoring = scoring_test, refit='accuracy')
+clf_test.fit(X_train, y_train)
+print('Returned hyperparameter: {}'.format(clf_test.best_params_))
+print('Best classification accuracy in train is: {}'.format(clf_test.best_score_))
+print('Classification accuracy on test is: {}'.format(clf_test.score(X_test, y_test)))
+\end{lstlisting}
 
-\section{Visualizing Errors : code chunk}
+\subsection{Visualizing Errors : code chunk}
 \label{appendix:visualizing}
 \begin{lstlisting}[language=Python]
 axes = plt.subplots(2, 4)[1]  # creates a grid of 10 plots
@@ -33,5 +47,18 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
 	\label{fig:probas}
 \end{figure*}
 
-\end{appendix}
 
+
+\newpage
+
+\subsection{Changing the loss function : confusion matrix / heatmap}
+\label{appendix:changingloss}
+\begin{figure*}[h]
+	\centering 
+	\includegraphics[scale=0.4]{Pics/confusion_matrixr}
+	\caption{Confusion matrix for the SVM classifier}
+	\label{fig:confusion}
+\end{figure*}
+
+
+\subsection{Part 2 : code}
