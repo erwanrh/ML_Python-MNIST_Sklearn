@@ -283,23 +283,34 @@ print(confusion_matrix(y_test, clf4.predict(X_test)))
 
 # In[ ]:
 
-from sklearn.preprocessing import OneHotEncoder
+#PIPELINE / PREPROCESSING
 from sklearn.metrics import log_loss
-new_pipeline = Pipeline([('scaler', StandardScaler), ('onehot',OneHotEncoder())])
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MultiLabelBinarizer
+pipe=Pipeline([
+    ('Scaler', StandardScaler()),
+    ('SVC', svc),   
+])
+mlb = MultiLabelBinarizer()
+mlb.fit_transform([(0, 1, 2, 3, 4), (5, 6, 7, 8, 9)])
 
+# CUSTOM SCORE 
+#Définition d'une fonction de perte
 def custom_MNISTscorer(y_true, y_predict):
-    y_predict_class = (np.array(y_predict)<5).astype(int)
-    y_true_class = (np.array(y_true)<5).astype(int)
+    #Classe 1 : les chiffres de 0 à 4, Classe 0 : les chiffres de 5 à 9
+    y_predict_class = (np.array(y_predict).astype(int)<5).astype(int)
+    y_true_class = (np.array(y_true).astype(int)<5).astype(int)
+    # Pénalité de 1 si les prédictions n'appartiennent pas à la bonne classe
     class_penalty = abs(y_predict_class - y_true_class)
-    
+    #Erreurs : la prédiction est différente de la vraie valeur 
     errors = (np.array(y_predict) != np.array(y_true)).astype(int) 
     
-    return (errors + class_penalty)/errors.len()
-    
+    #Score = Erreurs + Pénalité en % 
+    return 1- (errors + class_penalty).sum()/errors.size
 
-custom_MNISTscorer(y_test.astype(int), y_pred.astype(int))
-
-    
-new_scorer = make_scorer(log_loss)
+custom_MNISTscorer(y_test, y_pred)
+#Fonction à mettre dans le gridsearchCV
+new_scorer = make_scorer(custom_MNISTscorer)
 
 
