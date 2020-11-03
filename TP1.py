@@ -22,7 +22,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MaxAbsScaler, StandardScaler
 from sklearn.metrics import balanced_accuracy_score, make_scorer, confusion_matrix, accuracy_score
 
-
+import sklearn
 
 
 # # Imported packages
@@ -286,6 +286,31 @@ print(confusion_matrix(y_test, clf4.predict(X_test)))
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import log_loss
 new_pipeline = Pipeline([('scaler', StandardScaler), ('onehot',OneHotEncoder())])
+
+def custom_MNISTscorer(y_true, y_predict):
+    y_predict_class = (np.array(y_predict)<5).astype(int)
+    y_true_class = (np.array(y_true)<5).astype(int)
+    class_penalty = abs(y_predict_class - y_true_class)
+    
+    errors = (np.array(y_predict) != np.array(y_true)).astype(int) 
+    
+    return (errors + class_penalty)/errors.len()
+    
+y_pred = clf.predict(X_test)
+y_test
+
+y_predict_class = (np.array(y_pred).astype(int)<5).astype(int)
+y_true_class = (np.array(y_test).astype(int)<5).astype(int)
+class_penalty = abs(y_predict_class - y_true_class)
+
+errors = (np.array(y_pred) != np.array(y_test)).astype(int) 
+
+(errors).sum()/errors.size
+
+custom_MNISTscorer(y_test.astype(int), y_pred.astype(int))
+
+clf.score(X_test ,y_test)
+    
 new_socrer = make_scorer(log_loss)
 
 
