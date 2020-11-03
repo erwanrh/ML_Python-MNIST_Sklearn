@@ -293,21 +293,10 @@ def custom_MNISTscorer(y_true, y_predict):
     
     return (errors + class_penalty)/errors.len()
     
-y_pred = clf.predict(X_test)
-y_test
-
-y_predict_class = (np.array(y_pred).astype(int)<5).astype(int)
-y_true_class = (np.array(y_test).astype(int)<5).astype(int)
-class_penalty = abs(y_predict_class - y_true_class)
-
-errors = (np.array(y_pred) != np.array(y_test)).astype(int) 
-
-(errors).sum()/errors.size
 
 custom_MNISTscorer(y_test.astype(int), y_pred.astype(int))
 
-clf.score(X_test ,y_test)
     
-new_socrer = make_scorer(log_loss)
+new_scorer = make_scorer(log_loss)
 
 
