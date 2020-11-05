@@ -284,7 +284,6 @@ print(confusion_matrix(y_test, clf4.predict(X_test)))
 # In[ ]:
 
 #PIPELINE / PREPROCESSING
-from sklearn.metrics import log_loss
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MultiLabelBinarizer
@@ -312,5 +311,12 @@ def custom_MNISTscorer(y_true, y_predict):
 custom_MNISTscorer(y_test, y_pred)
 #Fonction à mettre dans le gridsearchCV
 new_scorer = make_scorer(custom_MNISTscorer)
+
+
+#Grid Search
+
+
+
+
 
 
