@@ -62,3 +62,15 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
 
 
 \subsection{Part 2 : code}
+\begin{lstlisting}[language=Python]
+def custom_MNISTscorer(y_true, y_predict):
+    #Classe 1 : les chiffres 0:4, Classe 0 : les chiffres 5:9
+    y_predict_class = (np.array(y_predict).astype(int)<5).astype(int)
+    y_true_class = (np.array(y_true).astype(int)<5).astype(int)
+    
+    #Compute accuracy for class 0 - 1 and labels 0:9
+    Class_weightedaccuracy = sklearn.metrics.balanced_accuracy_score(y_true_class, y_predict_class)
+    Label_weightedaccuracy = sklearn.metrics.balanced_accuracy_score(y_true, y_predict)
+    return Label_weightedaccuracy * Class_weightedaccuracy
+\end{lstlisting}
+ 

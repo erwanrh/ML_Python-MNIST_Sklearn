@@ -4,20 +4,46 @@
 Our custom loss function is an accuracy score with a penalty on inter-class errors. If the predicted value is different than the true value then the error count will increase +1. We decided to separate the data into two classes : 
 \begin{table}[hbt]
 \centering
-  \begin{tabular}{l|c|c}
-   Data & $\geq 5$ & $<5$ \\
+  \begin{tabular}{l|cccccccccc}
+   Label  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9  \\
     \hline
-   Class & 0 & 1 
+   Class & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \\
   \end{tabular}
 \end{table}
 
-If a label from class 0 is predicted in class 1, then the error count will increase +1 extra so the total error will be +2. The counts are as follows : 
+The counts for each class and label i are as follows : 
 
+\begin{table}[hbt]
+\centering
+\makegapedcells
+\begin{tabular}{cc|cc}
+\multicolumn{2}{c}{}
+            &   \multicolumn{2}{c}{Predicted} \\
+    &       &   True &  False              \\ 
+    \cline{2-4}
+\multirow{2}{*}{\rotatebox[origin=c]{90}{Actual}}
+    & True   & $tp_i$   & $fn_i$                 \\
+    & False    & $fp_i$  & $tn_i$                \\ 
+    \cline{2-4}
+    \end{tabular}
 
-The formula is : 
+\end{table}
+
+We define the Recall score for one class or label i as : 
 \begin{equation*}
-	Loss = \sum^n_{i=1} 
+	Recall_i = \frac{tp_i}{tp_i+fn_i}
+\end{equation*}
+which is the well classified individuals on the number of individuals actually in this class. We compute a weighted accuracy on the labels (0:9) and one on the classes (0-1). The formula we use is : 
+\begin{equation*}
+	Weighted\_Accuracy = {\sum^{K}_{i=1} Recall_i \over K}
+\end{equation*}
+
+We join both metrics by multiplying them to have a penalized weighted accuracy of the labels : 
+\begin{equation*}
+	Score = Weighted\_Accuracy_{Label} *  Weighted\_Accuracy_{Class}
 \end{equation*}
 
 \subsection{Pipeline}
 We chose to use a MaxAbsAscaler on the data because we want to minimize their variance knowing by constraining them to be between 0 and 1. In fact, our features represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. 
+
+\subsection{Algorithm}
