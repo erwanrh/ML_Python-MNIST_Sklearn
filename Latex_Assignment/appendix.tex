@@ -62,6 +62,7 @@ for true_label, pred_label, image in list(zip(y_test, y_pred, X_test)):
 
 
 \subsection{Part 2 : code}
+\label{appendix:code_part2}
 \begin{lstlisting}[language=Python]
 def custom_MNISTscorer(y_true, y_predict):
     #Classe 1 : les chiffres 0:4, Classe 0 : les chiffres 5:9
@@ -73,4 +74,11 @@ def custom_MNISTscorer(y_true, y_predict):
     Label_weightedaccuracy = sklearn.metrics.balanced_accuracy_score(y_true, y_predict)
     return Label_weightedaccuracy * Class_weightedaccuracy
 \end{lstlisting}
- 
+
+\subsection{Part 2 : final confusion matrix}
+\begin{figure*}[h]
+	\centering 
+	\includegraphics[scale=0.7]{Pics/part2confusion_mat}
+	\caption{Confusion matrix part 2}
+	\label{fig:confusion}
+\end{figure*} 
