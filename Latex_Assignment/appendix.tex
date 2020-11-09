@@ -74,6 +74,15 @@ def custom_MNISTscorer(y_true, y_predict):
     return Label_weightedaccuracy * Class_weightedaccuracy
 \end{lstlisting}
 
+
+\subsection{Part 2 : algorithm}
+\begin{figure*}[h]
+	\centering 
+	\includegraphics{Pics/RBF}
+	\caption{Similarity features using the Gaussian RBF}
+	\label{fig:rbfgaussian}
+\end{figure*} 
+
 \subsection{Part 2 : final confusion matrix}
 \begin{figure*}[h]
 	\centering 
@@ -82,8 +91,3 @@ def custom_MNISTscorer(y_true, y_predict):
 	\label{fig:confusion}
 \end{figure*} 
 
-\begin{figure*}[h]
-	\centering 
-	\includegraphics[scale=0.7]{Pics/RBF}
-	\caption{Similarity features using the Gaussian RBF}
-\end{figure*} 
