@@ -289,10 +289,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MultiLabelBinarizer
 pipe=Pipeline([
     ('Scaler', StandardScaler()),
-    ('SVC', svc),   
+    ('SVC', sklearn.svm.SVC()),   
 ])
 mlb = MultiLabelBinarizer()
-mlb.fit_transform([(0, 1, 2, 3, 4), (5, 6, 7, 8, 9)])
+mlb.fit([(0, 1, 2, 3, 4), (5, 6, 7, 8, 9)])
+
+test_transform = mlb.fit_transform(y_test)[0]
 
 # CUSTOM SCORE 
 #Définition d'une fonction de perte
@@ -300,23 +302,20 @@ def custom_MNISTscorer(y_true, y_predict):
     #Classe 1 : les chiffres de 0 à 4, Classe 0 : les chiffres de 5 à 9
     y_predict_class = (np.array(y_predict).astype(int)<5).astype(int)
     y_true_class = (np.array(y_true).astype(int)<5).astype(int)
-    # Pénalité de 1 si les prédictions n'appartiennent pas à la bonne classe
-    class_penalty = abs(y_predict_class - y_true_class)
-    #Erreurs : la prédiction est différente de la vraie valeur 
-    errors = (np.array(y_predict) != np.array(y_true)).astype(int) 
     
-    #Score = Erreurs + Pénalité en % 
-    return 1- (errors + class_penalty).sum()/errors.size
+    # Pénalité de 1 si les prédictions n'appartiennent pas à la bonne classe
+    Class_weightedaccuracy = sklearn.metrics.balanced_accuracy_score(y_true_class, y_predict_class)
+    Label_weightedaccuracy = sklearn.metrics.balanced_accuracy_score(y_true, y_predict)
+    print(Label_weightedaccuracy)
+    return Label_weightedaccuracy * Class_weightedaccuracy
+    
 
 custom_MNISTscorer(y_test, y_pred)
+
+
 #Fonction à mettre dans le gridsearchCV
-new_scorer = make_scorer(custom_MNISTscorer)
+new_scorer = make_scorer(custom_MNISTscorer))
 
-
-#Grid Search
-
-
-
-
-
+    
+y_pred = clf.predict(X_test)
 

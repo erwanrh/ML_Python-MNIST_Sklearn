@@ -32,7 +32,7 @@ The test accuracy is the measure of how often the points are correctly classifie
 \textbf{{Question}:  What is LinearSVC() classifier? Which kernel are we using? What is C? (this is a tricky question, try to find the answer online )}\\
 
 LinearSVC means Linear Support Vector Classification, which is supervised learning methods used for classification. LinearSVC are classes capable of performing binary and multi-class classification on a dataset. 
-This classifier tries to find a line that separates the True labels from the False labels.. We are using a linear kernel. The parameter C represents the regularisation weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $l(y)=\max(0,1-t\cdot y)$ \\
+This classifier tries to find a line that separates the True labels from the False labels.. We are using a linear kernel. The parameter C represents the regularisation weights, ie the penalty applied on the loss function. The loss function used here is the Squared Hinge Loss : $L(y, \hat y)=\sum^N_{i=0}(\max(0,1-y_i\cdot \hat y_i)^2$ )\\
 \todo{Add description of SVC}
 
 

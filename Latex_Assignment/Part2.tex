@@ -40,8 +40,10 @@ which is the well classified individuals on the number of individuals actually i
 
 We join both metrics by multiplying them to have a penalized weighted accuracy of the labels : 
 \begin{equation*}
-	Score = Weighted\_Accuracy_{Label} *  Weighted\_Accuracy_{Class}
+	Score  = Weighted\_Accuracy_{Label} *  Weighted\_Accuracy_{Class}
 \end{equation*}
+
+
 
 \subsection{Pipeline}
 To scales the features, we chose to use a MaxAbsScaler on the data because we want to minimize their variance knowing by constraining them to be between 0 and 1. In fact, our features represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. We trains a linear SVM model (using the SVC). 
