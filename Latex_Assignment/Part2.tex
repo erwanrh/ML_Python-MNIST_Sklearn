@@ -1,5 +1,4 @@
 \section{Part 2}
-
 \subsection{Loss Function}
 Our custom loss function is an accuracy score with a penalty on inter-class errors. If the predicted value is different than the true value then the error count will increase +1. We decided to separate the data into two classes : 
 \begin{table}[hbt]
@@ -51,8 +50,10 @@ To scales the features, we chose to use a MaxAbsScaler on the data because we wa
 \subsection{Algorithm}
 The Gaussian Radial Basis Function, or Gaussian RBF uses a similarity function that measures how much each instance resembles a particular landmark. It will create a landmark at each instance of the dataset and calculate the similarity function :  
 \begin{equation} \varphi_\gamma(x,l)= exp (-\gamma ||x-l||^2) \end{equation}
-It is a bell-shaped function varying from 0 (very far away from the landmark) to 1 (at the landmark). The idea is to transform the dataset and by doing so, make it linearly separable through non-linear methods (Figure 4).
-The metrics of the distance is usually the euclidean.
+It is a bell-shaped function varying from 0 (very far away from the landmark) to 1 (at the landmark). The idea is to transform the dataset and by doing so, make it linearly separable through non-linear methods (Figure \ref{fig:rbfgaussian}).
+The metrics of the distance is usually the euclidean. \\
+
+
 However, using the Gaussian RBF can be computationally expensive especially for large datasets given it transforms the training dataset with m instances and n features into a m instances and m features dataset.
 $\gamma$ and C both play the role of regularization hyperparameter. Increasing $\gamma$ make the bell-shap narrower so it reduces the instance's range of influence which makes the decision boundary ends up being more irregular, wiggling around individual instances.
 If the model is overfitting, trying to diminish the value of $\gamma$ could solve the problem.
