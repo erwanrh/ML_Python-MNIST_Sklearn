@@ -10,7 +10,7 @@ Our custom loss function is an accuracy score with a penalty on inter-class erro
   \end{tabular}
 \end{table}
 
-The counts for each class and label i are as follows : 
+The counts for each class or label i are as follows : 
 
 \begin{table}[hbt]
 \centering
@@ -37,23 +37,23 @@ which is the well classified individuals on the number of individuals actually i
 	Weighted\_Accuracy = {\sum^{K}_{i=1} Recall_i \over K}
 \end{equation*}
 
-We join both metrics by multiplying them to have a penalized weighted accuracy of the labels : 
+We join both metrics by multiplying them to have a penalised weighted accuracy of the labels : 
 \begin{equation*}
 	Score  = Weighted\_Accuracy_{Label} *  Weighted\_Accuracy_{Class}
 \end{equation*}
-
+By this mean, our score will decrease when errors are made between two classes. For example if two algorithms show the same number of misclassified labels, it will allow to figure out which one had the most class errors and then choose the other one.  
 
 
 \subsection{Pipeline}
-To scales the features, we chose to use a MaxAbsScaler on the data because we want to minimize their variance knowing by constraining them to be between 0 and 1. In fact, we have 784 features which represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. We trains a linear SVM model (using the SVC). 
+To scales the features, we chose to use a MaxAbsScaler on the data because we want to minimize their variance knowing by constraining them to be between 0 and 1. In fact, we have 784 features which represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. We train a random forest and a linear SVM model (using the SVC function). It resulted in a better score for the SVM model which is the one we are detailing next. The Jupyter Notebook file contains the entire code with ou trials.  
 
 \subsection{Algorithm}
 The Gaussian Radial Basis Function, or Gaussian RBF uses a similarity function that measures how much each instance resembles a particular landmark. It will create a landmark at each instance of the dataset and calculate the similarity function :  
 \begin{equation} \varphi_\gamma(x,l)= exp (-\gamma ||x-l||^2) \end{equation}
-It is a bell-shaped function varying from 0 (very far away from the landmark) to 1 (at the landmark). The idea is to transform the dataset and by doing so, make it linearly separable through non-linear methods (Figure \ref{fig:rbfgaussian}).
+It is a bell-shaped function varying from 0 (very far away from the landmark) to 1 (at the landmark). The idea is to transform the dataset and by doing so, make it linearly separable through non-linear methods\footnote{Appendix \ref{appendix:algo}, figure \ref{fig:rbfgaussian}} .
 The metrics of the distance is usually the euclidean. \\
 
 
 However, using the Gaussian RBF can be computationally expensive especially for large datasets given it transforms the training dataset with m instances and n features into a m instances and m features dataset.
-$\gamma$ and C both play the role of regularization hyperparameter. Increasing $\gamma$ make the bell-shap narrower so it reduces the instance's range of influence which makes the decision boundary ends up being more irregular, wiggling around individual instances.
+$\gamma$ and C both play the role of regularisation hyper-parameter. Increasing $\gamma$ makes the bell-shape narrower so it reduces the instance's range of influence which makes the decision boundary more irregular, going back and forth around individual instances.
 If the model is overfitting, trying to diminish the value of $\gamma$ could solve the problem.
