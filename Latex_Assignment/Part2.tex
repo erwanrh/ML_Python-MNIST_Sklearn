@@ -32,46 +32,28 @@ We define the Recall score for one class or label i as :
 \begin{equation*}
 	Recall_i = \frac{tp_i}{tp_i+fn_i}
 \end{equation*}
-which is the well classified individuals on the number of individuals actually in this class. We compute a balanced accuracy on the labels (0:9) and one on the classes (0-1). The formula we use is : 
+which is the well classified individuals on the number of individuals actually in this class. We compute a weighted accuracy on the labels (0:9) and one on the classes (0-1). The formula we use is : 
 \begin{equation*}
-	Balanced\_Accuracy = {\sum^{K}_{i=1} Recall_i \over K}
+	Weighted\_Accuracy = {\sum^{K}_{i=1} Recall_i \over K}
 \end{equation*}
 
-We join both metrics by multiplying them to have a penalised balanced accuracy of the labels : 
+We join both metrics by multiplying them to have a penalised weighted accuracy of the labels : 
 \begin{equation*}
-	Score  = Balanced\_Accuracy_{Label} *  Balanced\_Accuracy_{Class}
+	Score  = Weighted\_Accuracy_{Label} *  Weighted\_Accuracy_{Class}
 \end{equation*}
 By this mean, our score will decrease when errors are made between two classes. For example if two algorithms show the same number of misclassified labels, it will allow to figure out which one had the most class errors and then choose the other one.  
 
 
 \subsection{Pipeline}
-To scales the features, we chose to use a MaxAbsScaler on the data because we want to minimise their variance by constraining them to be between 0 and 1. In fact, we have 784 features which represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. We train the pipe with a random forest and a SVC model. It resulted in a better score for the SVC model which is the one we are detailing in the next section. The Jupyter Notebook file contains the entire code with our trials. 
+To scales the features, we chose to use a MaxAbsScaler on the data because we want to minimize their variance knowing by constraining them to be between 0 and 1. In fact, we have 784 features which represent a color code that goes from 0 to 255 which can be easily scaled to a [0,1] interval without any loss of information. We train a random forest and a linear SVM model (using the SVC function). It resulted in a better score for the SVM model which is the one we are detailing next. The Jupyter Notebook file contains the entire code with ou trials.  
 
 \subsection{Algorithm}
-The algorithm chosen is the Support Vector Classifier. The SVC for our multi-class problem consists in the creation of as many classifiers as there are classes, here 10 classes so 10 classifiers. Each classifier is training a class by the “one-vs-rest” method by considering one class only and the rest of the data as another class so the problem is transformed as several binary problems. \\
-
-The hyper-parameters are chosen via the Grid-Search and Cross-Validation object. The hyper-parameters considered are: \\
-$\odot$ \underline{Kernel} : it is the Kernel function used for the decision function in the algorithm; We consider the rbf kernel :  $\exp(-\gamma \|x-x'\|^2)$ and the linear kernel : $\langle x, x'\rangle$. \\
-$\odot$ \underline{C} : it is the regularisation parameter. It is multiplied by the squared l2 penalty $\|x-x'\|^2$ and allows to control the importance given to good classification (accuracy) by increasing its value. When decreasing its value the accuracy is decreased but it increases the importance of the larger margin between data points and thus a simpler decision function. We consider a log space as in part 1 but with 5 points.  
-\\
-
-The support vector machine separated our data with a boundary of a given form. Mathematically, it performs an optimisation with the features $x_i \in \mathbb R^p$, labels $y\in \{-1,1\}^n$ and  predictions : $\text{sign} (w^T\phi(x) + b)$ as follows: 
- \begin{align*} &\min_ {w, b, \zeta} \frac{1}{2} w^T w + C \sum_{i=1}^{n} \zeta_i \\
- \begin{split}\textrm {s/t }\quad & y_i (w^T \phi (x_i) + b) \geq 1 - \zeta_i,\\
-& \zeta_i \geq 0, i=1, ..., n\end{split}\end{align*} 
-This primal problem consists in maximising the margins by minimising $w^T w = \|w\|^2$ and penalising points that are misclassified or within the margin. We allow a distance from he correct boundary by adding the term $ C \sum_{i=1}^{n} \zeta_i$.  In this term, C is the regularisation parameter as explained earlier and $\zeta_i$ is the distance from the boundary. The SVC function of the sklearn package uses the l2 distance : $\|x-x'\|^2$. \\
-The dual problem is as follows : 
-
-	\begin{align*}&\min_{\alpha} \frac{1}{2} \alpha^T Q \alpha - e^T \alpha\\
-\textrm {s/t  }\quad & y^T \alpha = 0\\
-& 0 \leq \alpha_i \leq C, i=1, ..., n\end{align*}
-
-where $Q_{ij} \equiv y_i y_j K(x_i, x_j)$ and $ K(x_i, x_j)$ is the kernel function. $e$ is a vector of ones and $\alpha$ are the parameters with C as upper bound. Our kernel is the gaussian radial basis function. It allows computing the output label as : $sign(\sum_{i\in SV} y_i \alpha_i K(x_i, x) + b)$. The rbf kernel function is : 
-\begin{equation*} \exp (-\gamma ||x-x'||^2) \end{equation*}
+The Gaussian Radial Basis Function, or Gaussian RBF uses a similarity function that measures how much each instance resembles a particular landmark. It will create a landmark at each instance of the dataset and calculate the similarity function :  
+\begin{equation} \varphi_\gamma(x,l)= exp (-\gamma ||x-l||^2) \end{equation}
 It is a bell-shaped function varying from 0 (very far away from the landmark) to 1 (at the landmark). The idea is to transform the dataset and by doing so, make it linearly separable through non-linear methods\footnote{Appendix \ref{appendix:algo}, figure \ref{fig:rbfgaussian}} .
 The metrics of the distance is usually the euclidean. \\
 
 
 However, using the Gaussian RBF can be computationally expensive especially for large datasets given it transforms the training dataset with m instances and n features into a m instances and m features dataset.
 $\gamma$ and C both play the role of regularisation hyper-parameter. Increasing $\gamma$ makes the bell-shape narrower so it reduces the instance's range of influence which makes the decision boundary more irregular, going back and forth around individual instances.
-If the model is overfitting, trying to diminish the value of $\gamma$ could solve the problem. In our case we chose to not consider the gamma as a hyper-parameter in the grid-search. Thus, the value used is $\gamma= \frac{1}{n\_features\times \mathbb V[X]}$.
+If the model is overfitting, trying to diminish the value of $\gamma$ could solve the problem.
